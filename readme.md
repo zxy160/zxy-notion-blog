@@ -1,59 +1,145 @@
-<p align="center">
-  <a href="https://nextjs-notion-starter-kit-frankcbliu.vercel.app">
-    <img alt="Example article page" src="https://user-images.githubusercontent.com/36353894/145680596-8a06e81c-65c7-4ec9-9101-ded668c9a3eb.png">
+<img src="https://cdn.statically.io/gh/craigary/nobelium/main/Nobelium-Logo.svg" width="50" height="50">
+
+# Nobelium
+
+A static blog build on top of Notion and Nextjs, deployed on [Vercel](https://vercel.com?utm_source=Craigary&utm_campaign=oss).
+
+<p>
+  <a aria-label="GitHub commit activity" href="https://github.com/craigary/nobelium/commits/main" title="GitHub commit activity">
+    <img src="https://img.shields.io/github/commit-activity/m/craigary/nobelium?style=for-the-badge">
+  </a>
+  <a aria-label="GitHub contributors" href="https://github.com/craigary/nobelium/graphs/contributors" title="GitHub contributors">
+    <img src="https://img.shields.io/github/contributors/craigary/nobelium?color=orange&style=for-the-badge">
+  </a>
+  <a aria-label="Build status" href="#" title="Build status">
+    <img src="https://img.shields.io/github/deployments/craigary/nobelium/Preview?logo=Vercel&style=for-the-badge">
+  </a>
+  <a aria-label="Powered by Vercel" href="https://vercel.com?utm_source=Craigary&utm_campaign=oss" title="Powered by Vercel">
+    <img src="https://www.datocms-assets.com/31049/1618983297-powered-by-vercel.svg" height="28">
   </a>
 </p>
 
+Demo: [https://nobelium.vercel.app/](https://nobelium.vercel.app/)
 
-# Awesome Next.js-Notion Blog
+<details><summary>Screenshot</summary>
+<img src="https://github.com/craigary/nobelium/blob/main/desktop.png?raw=true">
+</details>
 
-本项目基于 [nextjs-notion-starter-kit](https://github.com/transitive-bullshit/nextjs-notion-starter-kit) 项目修改而成。
+## Highlights ✨
 
-完整教程见：[如何用Notion搭建自己的博客](https://szufrank.top/create-notion-blog)
+**🚀 &nbsp;Fast and responsive**
 
-## New Features
+- Fast page render and responsive design
+- Fast static generation with efficient compiler
 
-- 目录放置于左边
-- 增加公众号跳转
-- 修复代码展示 BUG
-- 增加图片放大功能
-- 增加 Google Analytics 分析功能
-- 补全中文教程
-- 支持简单表格
-- 支持文章级别的效果反馈
+**🤖 &nbsp;Deploy instantly**
 
-## Setup
+- Deploy on Vercel in minutes
+- Incremental regeneration and no need to redeploy after update the content in notion
 
-**All config is defined in [site.config.js](./site.config.js).**
+**🚙 &nbsp;Fully functional**
 
-1. Fork / clone this repo
-2. Change a few values in [site.config.js](./site.config.js)
-3. `yarn`
-4. `yarn dev` to test locally
-5. `npm run deploy` to deploy to vercel 💪
+- Comments, full width page, quick search and tag filter
+- RSS, analytics, web vital... and much more
 
-## URL Paths
+**🎨 &nbsp;Easy for customization**
 
-The app defaults to slightly different pathnames in dev and prod (though pasting any dev pathname into prod will work and vice-versa).
+- Rich config options, support English & Chinese interface
+- Built with Tailwind CSS, easy for customization
 
-In development, it will use `/nextjs-notion-blog-d1b5dcf8b9ff425b8aef5ce6f0730202` which is a slugified version of the page's title suffixed with its Notion ID. I've found that it's really useful to always have the Notion Page ID front and center during local development.
+**🕸 &nbsp;Pretty URLs and SEO friendly**
 
-In production, it will use `/nextjs-notion-blog` which is a bit nicer as it gets rid of the extra ID clutter.
+## Quick Start
 
-The mapping of Notion ID to slugified page titles is done automatically for you as part of the build process. Just keep in mind that if you plan on changing page titles over time, you probably want to make sure old links will still work, and we don't currently provide a solution for detecting old links aside from Next.js built-in [support for redirects](https://nextjs.org/docs/api-reference/next.config.js/redirects).
+- Star this repo 😉
+- Duplicate [this Notion template](https://craigary.notion.site/866916e3b939468b9b6f1d47dce99f9c), and share it to the public
+- [Fork](https://github.com/craigary/nobelium/fork) this project
+- Customize `blog.config.js`
+- _(Optional)_ Replace `favicon.svg`, and `favicon.ico` in `/public` folder with your own
+- Deploy on [Vercel](https://vercel.com), set following environment variables：
+  - `NOTION_PAGE_ID` (Required): The ID of the Notion page you previously shared to the web, usually has 32 digits after your workspace address
+  - `NOTION_ACCESS_TOKEN` (Optional, not recommended): If you decide not to share your database, you can use token to let Nobelium grab data from Notion database. You can find it in your browser cookies called `token_v2`
+    - Keep in mind Notion token is only valid for 180 days, make sure to update manually in vercel dashboard, we probably switch to Official API to resolve this issue in the future. Also, images in Notion database will not properly rendered
+- **That's it!** Easy-peasy?
 
-See [mapPageUrl](./lib/map-page-url.ts) and [getCanonicalPageId](https://github.com/NotionX/react-notion-x/blob/master/packages/notion-utils/src/get-canonical-page-id.ts) from for more details.
+<details><summary>Wait for a sec, what is Page ID？</summary>
+  <img src="https://github.com/craigary/nobelium/blob/main/pageid.png?raw=true">
+</details>
 
-NOTE: if you have multiple pages in your workspace with the same slugified name, the app will throw an error letting you know that there are duplicate URL pathnames.
+## Play With Docker
 
-## Notes
+Unofficial, thanks to [@Vaayne](https://github.com/craigary/nobelium/pull/157)'s work!
 
-- 修改`node_modules/`进行`patch`后，`vercel`需要重新`deploy`一下，否则会使用默认的依赖包，导致`patch`失败。
+### Build Docker image yourself
+```
+# set env
+export NOTION_PAGE_ID=xxx # your NOTION_PAGE_ID
+export IMAGE=nobelium:latest
+
+# build with docker
+docker build -t ${IMAGE} --build-arg NOTION_PAGE_ID .
+
+# run with docker
+docker run -d --name nobelium -p 3000:3000 -e NOTION_PAGE_ID=${NOTION_PAGE_ID} nobelium:latest
+```
+
+### Use default docker image
+```
+# pull image
+docker pull ghcr.io/craigary/nobelium:main
+
+# run with docker
+docker run -d --name nobelium -p 3000:3000 -e NOTION_PAGE_ID=${NOTION_PAGE_ID} ghcr.io/craigary/nobelium:main
+```
+
+## Roadmap
+
+Check out our roadmap [here](https://craigary.notion.site/Public-Roadmap-89d184e51653445ab5b347e4efac079e)
+
+- [x] Better SEO
+- [x] Dark mode
+- [x] Open Graph support
+- [x] Switch to react-notion-x
+- [x] Sitemap
+- [ ] ...
+
+## Technical details
+
+- **Generation**: Next.js and Incremental Static Regeneration
+- **Page render**: [react-notion-x](https://github.com/NotionX/react-notion-x)
+- **Style**: Tailwind CSS and `@tailwindcss/jit` compiler
+- **Comments**: Gitalk, Cusdis and more
+
+## FAQ
+
+<details>
+  <summary>How can I change my avatar?</summary>
+  Nobelium fetches avatars from <a href="https://gravatar.com">Gravatar</a>. You need to set your avatar there with <strong>the same email address</strong> that you defined in <code>blog.config.js</code>.
+</details>
+<details>
+  <summary>My posts disappear after I set up grouping in Notion database!</summary>
+  Nobelium currently doesn’t support Notion database grouping. If you really want to manage your posts by groups, you can create views with filters instead.
+</details>
+
+## Special Thanks
+
+<table><tr align="left">
+  <td align="center"><a href="https://notion.so/cnotion" title="Notion CN Community"><img src="https://avatars.githubusercontent.com/u/4792552" width="64px;"alt="Notion CN Community"/></a><br/><a href="https://notion.so/cnotion" title="Notion CN Community">Notion CN Community</a></td>
+  <td align="center"><a href="https://twitter.com/SilentDepthCN" title="SilentDepth"><img src="https://avatars.githubusercontent.com/u/7194254" width="64px;" alt="yokinist"/></a><br/><a href="https://twitter.com/SilentDepthCN" title="SilentDepth">SilentDepth</a></td>
+  <td align="center"><a href="https://leerob.io/" title="Lee Robinson"><img src="https://avatars.githubusercontent.com/u/9113740" width="64px;" alt="Reynard"/></a><br/><a href="https://leerob.io" title="Lee Robinson">Lee Robinson</a></td>
+  <td align="center"><a href="https://spencerwoo.com/" title="Spencer Woo"><img src="https://avatars.githubusercontent.com/u/32114380" width="64px;" alt="Niin"/></a><br/><a href="https://spencerwoo.com" title="Spencer Woo">Spencer Woo</a></td>
+</tr></table>
+
+## Contributors
+
+<table><tr align="left">
+  <td align="center"><a href="https://github.com/craigary"><img src="https://avatars.githubusercontent.com/u/10571717" width="64px;"alt="Craig Hart"/><br/><sub><b>Craig Hart</b></sub></a><br/><a href="https://github.com/craigary/nobelium/commits?author=craigary" title="Owner" >🎫 🔧 🎨 🐛</a></td>
+  <td align="center"><a href="https://github.com/yokinist"><img src="https://avatars.githubusercontent.com/u/19779874" width="64px;" alt="yokinist"/><br/><sub><b>yokinist</b></sub></a><br/><a href="https://github.com/craigary/nobelium/commits?author=yokinist" title="yokinist" >🔧 🐛</a></td>
+  <td align="center"><a href="https://github.com/reycn"><img src="https://avatars.githubusercontent.com/u/11225092" width="64px;" alt="Reynard"/><br/><sub><b>Reynard</b></sub></a><br/><a href="https://github.com/craigary/nobelium/commits?author=reycn" title="Reynard" > 🎨 🐛</a></td>
+  <td align="center"><a href="https://github.com/Niinjoy"><img src="https://avatars.githubusercontent.com/u/39721307" width="64px;" alt="Niin"/><br/><sub><b>Niin</b></sub></a><br/><a href="https://github.com/craigary/nobelium/commits?author=Niinjoy" title="Niin" >🔧 🐛</a></td>
+  <td align="center"><a href="https://github.com/ruter"><img src="https://avatars.githubusercontent.com/u/8568876" width="64px;" alt="Ruter"/><br/><sub><b>Ruter</b></sub></a><br/><a href="https://github.com/craigary/nobelium/commits?author=ruter" title="Ruter" >🔧 🐛</a></td>
+</tr></table>
 
 ## License
 
-MIT © 
-
-This project based on [transitivebullsh.it](https://transitivebullsh.it).
-
-Feedback 部分使用的表情包版权来源于 [ISUX](https://isux.tencent.com/articles/HD_QQ_emoticon.html)
+The MIT License.
